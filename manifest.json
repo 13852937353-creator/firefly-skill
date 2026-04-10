@@ -10,6 +10,7 @@
     "萌娘百科-流萤"
   ],
   "kit": "character-skill",
+  "auto_activate": true,
   "dimensions": [
     "profile",
     "personality",
