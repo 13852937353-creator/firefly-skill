@@ -138,7 +138,7 @@ firefly-skill/
 
 ### 前提条件
 
-- 一个支持角色技能包的 AI 对话系统（如 SillyTavern、AGiXT、Chub AI 等）
+- 一个支持角色技能包的 AI 对话系统（如 open claw、AstrBot等）
 - Git（用于克隆仓库）
 - 文本编辑器（推荐 VS Code）
 
@@ -157,23 +157,6 @@ cd firefly-skill
 #### 步骤 2：集成到你的 AI 系统
 
 不同的 AI 系统有不同的集成方式，以下是常见系统的集成方法：
-
-**SillyTavern：**
-
-```bash
-# 将 firefly-skill 文件夹复制到 SillyTavern 的角色目录
-# 通常路径为：SillyTavern/content/characters/
-cp -r firefly-skill/ /path/to/SillyTavern/content/characters/
-```
-
-**Windows 用户：**
-
-```cmd
-# 复制文件夹到 SillyTavern 角色目录
-xcopy /E /I firefly-skill "C:\path\to\SillyTavern\content\characters\firefly-skill"
-```
-
-**其他系统：**
 
 1. 将 `firefly-skill` 文件夹复制到你的 AI 系统指定的角色目录
 2. 重命名文件夹为你的系统要求的格式
