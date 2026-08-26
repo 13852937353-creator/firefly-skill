@@ -305,8 +305,55 @@ document.body.scrollHeight
 }
 
 
-</script>
+<script>
+  // ==============================
+// 用户名字系统
+// 第一次进入网页询问名字
+// 后续自动记住
+// ==============================
 
+let userName = localStorage.getItem("firefly_user_name");
+
+
+if(!userName){
+
+    userName = prompt(
+        "你好，我是流萤。\n\n可以告诉我你的名字吗？"
+    );
+
+
+    if(!userName || userName.trim()===""){
+
+        userName = "朋友";
+
+    }
+
+
+    localStorage.setItem(
+        "firefly_user_name",
+        userName
+    );
+
+}
+
+
+// ==============================
+// 发送消息时附带名字
+// ==============================
+
+// 找到你的 fetch 部分
+// 原本应该类似：
+//
+// body:{
+//     message:input.value
+// }
+//
+// 改成：
+
+body:{
+    message:input.value,
+    name:userName
+}
 
 
 </body>
