@@ -313,281 +313,329 @@ document.body.scrollHeight
 
 
 }
-// =================================
+// ======================================
 // 🌸 流萤聊天存档系统
-// =================================
+// 新建 / 保存 / 读取 / 删除 / 列表
+// ======================================
 
 
 
-// 保存当前聊天
-
-function saveChat(){
-
-
-    let id =
-    localStorage.getItem(
-        "current_save"
-    );
-
-
-    if(!id){
-
-        return;
-
-    }
-
-
-
-    localStorage.setItem(
-
-        "firefly_save_"+id,
-
-        chat.innerHTML
-
-    );
-
-
-}
-
-
-
-// ================================
+// ======================
 // 新建存档
-// ================================
-
+// ======================
 
 function createSave(){
 
 
-    let name =
-    prompt(
-        "请输入这个存档的名字"
-    );
+let name = prompt(
+"请输入这个存档的名字"
+);
 
 
-    if(!name){
+if(!name){
 
-        return;
+return;
 
-    }
-
-
-
-    let id =
-    Date.now();
+}
 
 
 
-    let saveList =
-    JSON.parse(
-        localStorage.getItem(
-            "firefly_saves"
-        )
-    ) || [];
+let id = Date.now();
 
 
 
-    saveList.push({
-
-        id:id,
-
-        name:name,
-
-        time:new Date()
-        .toLocaleString()
-
-    });
+let saveList =
+JSON.parse(
+localStorage.getItem("firefly_saves")
+)||[];
 
 
 
-    localStorage.setItem(
+saveList.push({
 
-        "firefly_saves",
+id:id,
 
-        JSON.stringify(saveList)
+name:name,
 
-    );
+time:new Date()
+.toLocaleString()
 
-
-
-    localStorage.setItem(
-
-        "current_save",
-
-        id
-
-    );
+});
 
 
 
-    chat.innerHTML=`
+localStorage.setItem(
 
-    <p class="ai">
+"firefly_saves",
 
-    流萤：新的旅程开始了……
+JSON.stringify(saveList)
 
-    </p>
-
-    `;
+);
 
 
 
-    saveChat();
+localStorage.setItem(
+
+"current_save",
+
+id
+
+);
 
 
 
-    alert(
-        "存档创建成功"
-    );
+// 清空聊天窗口
+
+chat.innerHTML = `
+
+<p class="ai">
+
+流萤：新的旅程开始了……
+
+</p>
+
+`;
+
+
+
+// 保存空存档
+
+saveChat();
+
+
+
+alert(
+
+"存档创建成功："+name
+
+);
 
 
 }
 
 
 
-// ================================
+
+
+// ======================
+// 自动保存聊天
+// ======================
+
+
+function saveChat(){
+
+
+let id =
+
+localStorage.getItem(
+"current_save"
+);
+
+
+
+if(!id){
+
+return;
+
+}
+
+
+
+localStorage.setItem(
+
+"firefly_save_"+id,
+
+chat.innerHTML
+
+);
+
+
+
+}
+
+
+
+
+// ======================
 // 显示存档列表
-// ================================
+// ======================
 
 
 function showSaves(){
 
 
 
-    let saveList =
+let saveList =
 
-    JSON.parse(
+JSON.parse(
 
-        localStorage.getItem(
-            "firefly_saves"
-        )
+localStorage.getItem("firefly_saves")
 
-    ) || [];
+)||[];
 
 
 
-    if(saveList.length===0){
+if(saveList.length===0){
 
 
-        alert(
-            "还没有存档哦"
-        );
+alert(
+
+"目前没有存档"
+
+);
 
 
-        return;
-
-
-    }
-
-
-
-
-    let text="";
-
-
-
-    saveList.forEach(function(save,index){
-
-
-        text +=
-
-        (index+1)
-        +"."+save.name
-        +"  "
-        +save.time
-        +"\n\n";
-
-
-    });
-
-
-
-    let choose =
-
-    prompt(
-
-    "📖 你的旅程：\n\n"
-
-    +text
-
-    +"请输入编号读取"
-
-    );
-
-
-
-    if(!choose){
-
-        return;
-
-    }
-
-
-
-    let index =
-    Number(choose)-1;
-
-
-
-    if(saveList[index]){
-
-
-        loadSave(
-
-            saveList[index].id
-
-        );
-
-
-    }
+return;
 
 
 }
 
 
 
-// ================================
+
+let text =
+
+"🌸 流萤存档列表\n\n";
+
+
+
+saveList.forEach(
+
+(save,index)=>{
+
+
+text +=
+
+(index+1)
+
++". "
+
++save.name
+
++"\n"
+
++save.time
+
++"\n\n";
+
+
+}
+
+);
+
+
+
+let choose = prompt(
+
+text+
+
+"输入编号读取"
+
+);
+
+
+
+if(!choose){
+
+return;
+
+}
+
+
+
+let index =
+
+Number(choose)-1;
+
+
+
+if(saveList[index]){
+
+
+loadSave(
+
+saveList[index].id
+
+);
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+// ======================
 // 读取存档
-// ================================
+// ======================
 
 
 function loadSave(id){
 
 
 
-    let data =
+let data =
 
-    localStorage.getItem(
+localStorage.getItem(
 
-        "firefly_save_"+id
+"firefly_save_"+id
 
-    );
-
-
-
-    if(data){
+);
 
 
 
-        chat.innerHTML=data;
+if(!data){
+
+
+alert(
+
+"这个存档没有聊天记录"
+
+);
+
+
+return;
+
+
+}
 
 
 
-        localStorage.setItem(
-
-            "current_save",
-
-            id
-
-        );
+chat.innerHTML=data;
 
 
-        alert(
-            "读取成功"
-        );
+
+localStorage.setItem(
+
+"current_save",
+
+id
+
+);
 
 
-    }
+
+window.scrollTo(
+
+0,
+
+document.body.scrollHeight
+
+);
+
+
+
+alert(
+
+"读取存档成功"
+
+);
+
 
 
 }
@@ -595,118 +643,165 @@ function loadSave(id){
 
 
 
-// ================================
+
+
+// ======================
 // 删除存档
-// ================================
+// ======================
 
 
 function deleteSave(){
 
 
 
-    let saveList =
+let saveList =
 
-    JSON.parse(
+JSON.parse(
 
-        localStorage.getItem(
-            "firefly_saves"
-        )
+localStorage.getItem("firefly_saves")
 
-    ) || [];
+)||[];
 
 
 
-    if(saveList.length===0){
+if(saveList.length===0){
 
 
-        alert(
-            "没有存档"
-        );
+alert(
+
+"没有存档"
+
+);
 
 
-        return;
-
-    }
+return;
 
 
-
-
-    let text="";
-
-
-    saveList.forEach(function(save,index){
-
-
-        text +=
-
-        (index+1)
-        +"."+save.name
-        +"\n";
-
-
-    });
+}
 
 
 
-    let choose =
+let text=
 
-    prompt(
-
-    "输入要删除的存档编号：\n\n"
-
-    +text
-
-    );
+"请输入删除编号：\n\n";
 
 
 
-    let index =
-    Number(choose)-1;
+saveList.forEach(
+
+(save,index)=>{
+
+
+text +=
+
+(index+1)
+
++". "
+
++save.name
+
++"\n";
+
+
+}
+
+);
 
 
 
-    if(saveList[index]){
+let choose=
 
-
-        let id =
-        saveList[index].id;
-
-
-
-        localStorage.removeItem(
-
-            "firefly_save_"+id
-
-        );
+prompt(text);
 
 
 
-        saveList.splice(
+if(!choose){
 
-            index,
+return;
 
-            1
-
-        );
+}
 
 
 
-        localStorage.setItem(
+let index=
 
-            "firefly_saves",
-
-            JSON.stringify(saveList)
-
-        );
+Number(choose)-1;
 
 
 
-        alert(
-            "删除成功"
-        );
+if(saveList[index]){
 
 
-    }
+let id=
+
+saveList[index].id;
+
+
+
+// 删除聊天
+
+localStorage.removeItem(
+
+"firefly_save_"+id
+
+);
+
+
+
+// 删除列表
+
+saveList.splice(
+
+index,
+
+1
+
+);
+
+
+
+localStorage.setItem(
+
+"firefly_saves",
+
+JSON.stringify(saveList)
+
+);
+
+
+
+// 如果删除的是当前存档
+
+if(
+
+localStorage.getItem("current_save")
+
+==id
+
+){
+
+
+localStorage.removeItem(
+
+"current_save"
+
+);
+
+
+}
+
+
+
+alert(
+
+"删除成功"
+
+);
+
+
+
+}
+
 
 
 }
