@@ -183,7 +183,15 @@ placeholder="和流萤说些什么..."
 <button onclick="newChat()">
 新建聊天
 </button>
-
+<button onclick="showSaves()">
+📖 存档列表
+</button>
+<button onclick="createSave()">
+✨ 新建存档
+</button>
+ <button onclick="deleteSave()">
+🗑 删除存档
+</button>
 </div>
 
 
@@ -305,8 +313,403 @@ document.body.scrollHeight
 
 
 }
+// =================================
+// 🌸 流萤聊天存档系统
+// =================================
 
 
+
+// 保存当前聊天
+
+function saveChat(){
+
+
+    let id =
+    localStorage.getItem(
+        "current_save"
+    );
+
+
+    if(!id){
+
+        return;
+
+    }
+
+
+
+    localStorage.setItem(
+
+        "firefly_save_"+id,
+
+        chat.innerHTML
+
+    );
+
+
+}
+
+
+
+// ================================
+// 新建存档
+// ================================
+
+
+function createSave(){
+
+
+    let name =
+    prompt(
+        "请输入这个存档的名字"
+    );
+
+
+    if(!name){
+
+        return;
+
+    }
+
+
+
+    let id =
+    Date.now();
+
+
+
+    let saveList =
+    JSON.parse(
+        localStorage.getItem(
+            "firefly_saves"
+        )
+    ) || [];
+
+
+
+    saveList.push({
+
+        id:id,
+
+        name:name,
+
+        time:new Date()
+        .toLocaleString()
+
+    });
+
+
+
+    localStorage.setItem(
+
+        "firefly_saves",
+
+        JSON.stringify(saveList)
+
+    );
+
+
+
+    localStorage.setItem(
+
+        "current_save",
+
+        id
+
+    );
+
+
+
+    chat.innerHTML=`
+
+    <p class="ai">
+
+    流萤：新的旅程开始了……
+
+    </p>
+
+    `;
+
+
+
+    saveChat();
+
+
+
+    alert(
+        "存档创建成功"
+    );
+
+
+}
+
+
+
+// ================================
+// 显示存档列表
+// ================================
+
+
+function showSaves(){
+
+
+
+    let saveList =
+
+    JSON.parse(
+
+        localStorage.getItem(
+            "firefly_saves"
+        )
+
+    ) || [];
+
+
+
+    if(saveList.length===0){
+
+
+        alert(
+            "还没有存档哦"
+        );
+
+
+        return;
+
+
+    }
+
+
+
+
+    let text="";
+
+
+
+    saveList.forEach(function(save,index){
+
+
+        text +=
+
+        (index+1)
+        +"."+save.name
+        +"  "
+        +save.time
+        +"\n\n";
+
+
+    });
+
+
+
+    let choose =
+
+    prompt(
+
+    "📖 你的旅程：\n\n"
+
+    +text
+
+    +"请输入编号读取"
+
+    );
+
+
+
+    if(!choose){
+
+        return;
+
+    }
+
+
+
+    let index =
+    Number(choose)-1;
+
+
+
+    if(saveList[index]){
+
+
+        loadSave(
+
+            saveList[index].id
+
+        );
+
+
+    }
+
+
+}
+
+
+
+// ================================
+// 读取存档
+// ================================
+
+
+function loadSave(id){
+
+
+
+    let data =
+
+    localStorage.getItem(
+
+        "firefly_save_"+id
+
+    );
+
+
+
+    if(data){
+
+
+
+        chat.innerHTML=data;
+
+
+
+        localStorage.setItem(
+
+            "current_save",
+
+            id
+
+        );
+
+
+        alert(
+            "读取成功"
+        );
+
+
+    }
+
+
+}
+
+
+
+
+// ================================
+// 删除存档
+// ================================
+
+
+function deleteSave(){
+
+
+
+    let saveList =
+
+    JSON.parse(
+
+        localStorage.getItem(
+            "firefly_saves"
+        )
+
+    ) || [];
+
+
+
+    if(saveList.length===0){
+
+
+        alert(
+            "没有存档"
+        );
+
+
+        return;
+
+    }
+
+
+
+
+    let text="";
+
+
+    saveList.forEach(function(save,index){
+
+
+        text +=
+
+        (index+1)
+        +"."+save.name
+        +"\n";
+
+
+    });
+
+
+
+    let choose =
+
+    prompt(
+
+    "输入要删除的存档编号：\n\n"
+
+    +text
+
+    );
+
+
+
+    let index =
+    Number(choose)-1;
+
+
+
+    if(saveList[index]){
+
+
+        let id =
+        saveList[index].id;
+
+
+
+        localStorage.removeItem(
+
+            "firefly_save_"+id
+
+        );
+
+
+
+        saveList.splice(
+
+            index,
+
+            1
+
+        );
+
+
+
+        localStorage.setItem(
+
+            "firefly_saves",
+
+            JSON.stringify(saveList)
+
+        );
+
+
+
+        alert(
+            "删除成功"
+        );
+
+
+    }
+
+
+}
 // =================================
 // 🌸 流萤 · 新建聊天功能
 // 清除当前聊天记录，重新开始
