@@ -39,10 +39,6 @@ export default async function handler(req, res) {
     let reply = "";
 
 
-    }
-
-
-
     /*
     
     防止连续回复一样
@@ -312,8 +308,6 @@ reply=randomNoRepeat([
 `欢迎回来，${userName}。能和你聊天，我很开心。`
 ]);
 
-]);
-
 }
 
 
@@ -562,8 +556,6 @@ reply=randomNoRepeat([
 `听雨也是一种很特别的放松方式，希望你喜欢。`
 ]);
 
-]);
-
 }
 
 
@@ -576,7 +568,5 @@ return res.status(200).json({
     reply: reply,
     message: reply
 });
-    });
-
 
 }
