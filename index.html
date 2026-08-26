@@ -200,7 +200,7 @@ if(!userName){
 userName = prompt("请输入你的名字") || "阿星";
 
 localStorage.setItem(
-"user_name",
+"userName",
 userName
 );
 
@@ -275,11 +275,8 @@ headers:{
 },
 
 body:JSON.stringify({
-
 message:msg,
-
 userName:userName
-
 })
 
 });
