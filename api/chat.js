@@ -39,6 +39,14 @@ export default async function handler(req, res) {
     let reply = "";
 
 
+// ==============================
+// 🌸 用户名字记忆
+// ==============================
+
+let userName = "开拓者";
+
+
+
 
     /*
     
@@ -133,6 +141,40 @@ export default async function handler(req, res) {
     
     
     */// ==============================
+// 🌸 修改用户名字
+// ==============================
+
+if(
+
+msg.includes("叫我")||
+msg.includes("我的名字是")||
+msg.includes("我的名字叫")||
+msg.includes("以后叫我")||
+msg.includes("称呼我")
+
+){
+
+userName = message
+.replace("我的名字是","")
+.replace("我的名字叫","")
+.replace("以后叫我","")
+.replace("叫我","")
+.replace("称呼我","")
+.trim();
+
+
+reply=randomNoRepeat([
+
+"嗯，我记住了。以后就这样称呼你。",
+"好的，我会记住你的名字。",
+"知道了，以后见面的时候，我会叫你的名字。",
+"原来你的名字是这个呀，我会好好记住的。",
+"嗯……这个名字，我会放在心里的。"
+
+]);
+
+}
+// ==============================
 // 🔥 流萤专属剧情区域
 // 优先级：寿命 > 命运 > 萨姆 > 星核猎手
 // ==============================
@@ -142,7 +184,7 @@ export default async function handler(req, res) {
 // 🌙 流萤 · 寿命与存在
 // ==============================
 
-if(
+else if(
 
 msg.includes("寿命")||
 msg.includes("活多久")||
