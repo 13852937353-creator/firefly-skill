@@ -155,7 +155,7 @@ font-size:16px;
 
 
 <p class="ai">
-流萤：欢迎回来，${userName}。
+`流萤：欢迎回来，${userName}。`
 </p>
 
 
@@ -205,10 +205,18 @@ if(old){
 
 document.getElementById("chat").innerHTML=old;
 
-}
+}else{
+
+document.getElementById("chat").innerHTML=
+`
+<p class="ai">
+流萤：欢迎回来，${userName}。
+</p>
+`;
 
 }
 
+}
 
 
 
@@ -304,16 +312,7 @@ document.body.scrollHeight
 );
 
 
-}let userName = localStorage.getItem("user_name");
 
-if(!userName){
-
-userName = prompt("请输入你的名字");
-
-localStorage.setItem(
-"user_name",
-userName
-);
 
 }
 
@@ -385,10 +384,21 @@ function newChat(){
 
 
 }
+   let userName = localStorage.getItem("user_name");
+
+if(!userName){
+
+userName = prompt("请输入你的名字");
+
+localStorage.setItem(
+"user_name",
+userName
+);
+
+}
+
 </script>
-
-
-
+  
 </body>
 
 
