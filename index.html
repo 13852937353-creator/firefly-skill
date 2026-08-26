@@ -190,9 +190,22 @@ placeholder="和流萤说些什么..."
 
 </div>
 
-
-
 <script>
+
+// 用户名字
+let userName = localStorage.getItem("user_name");
+
+if(!userName){
+
+userName = prompt("请输入你的名字") || "开拓者";
+
+localStorage.setItem(
+"user_name",
+userName
+);
+
+}
+
 
 
 //读取历史聊天
@@ -220,11 +233,11 @@ document.getElementById("chat").innerHTML=
 
 
 
+
 async function send(){
 
 
 let input=document.getElementById("input");
-
 
 let msg=input.value;
 
@@ -232,12 +245,9 @@ let msg=input.value;
 if(!msg)return;
 
 
-
 let chat=document.getElementById("chat");
 
 
-
-//显示自己的话
 
 chat.innerHTML+=`
 
@@ -251,8 +261,6 @@ ${userName}：${msg}
 
 
 
-//请求AI
-
 let res=await fetch("/api/chat",{
 
 method:"POST",
@@ -265,7 +273,9 @@ headers:{
 
 body:JSON.stringify({
 
-message:msg
+message:msg,
+
+userName:userName
 
 })
 
@@ -276,8 +286,6 @@ message:msg
 let data=await res.json();
 
 
-
-//显示流萤回复
 
 chat.innerHTML+=`
 
@@ -291,8 +299,6 @@ chat.innerHTML+=`
 
 
 
-//保存记忆
-
 localStorage.setItem(
 "firefly_chat",
 chat.innerHTML
@@ -304,7 +310,62 @@ input.value="";
 
 
 
-//自动滚动
+window.scrollTo(
+0,
+document.body.scrollHeight
+);
+
+
+}
+
+
+
+
+function newChat(){
+
+
+let result=confirm(
+"确定要开始新的聊天吗？\n当前聊天记录会被清除。"
+);
+
+
+if(!result){
+
+return;
+
+}
+
+
+
+localStorage.removeItem(
+"firefly_chat"
+);
+
+
+
+let chat=document.getElementById("chat");
+
+
+chat.innerHTML=
+
+`
+
+<p class="ai">
+
+流萤：你好……新的旅程开始了，${userName}。
+
+</p>
+
+`;
+
+
+
+localStorage.setItem(
+"firefly_chat",
+chat.innerHTML
+);
+
+
 
 window.scrollTo(
 0,
@@ -312,93 +373,12 @@ document.body.scrollHeight
 );
 
 
-
-
 }
 
-// =================================
-// 🌸 流萤 · 新建聊天功能
-// 清除当前聊天记录，重新开始
-// =================================
-
-
-function newChat(){
-
-
-    let result = confirm(
-        "确定要开始新的聊天吗？\n当前聊天记录会被清除。"
-    );
-
-
-    if(!result){
-
-        return;
-
-    }
-
-
-
-    // 清除保存的聊天记录
-
-    localStorage.removeItem(
-        "firefly_chat"
-    );
-
-
-
-    // 清空聊天窗口
-
-    chat.innerHTML = "";
-
-
-
-    // 新的开场白
-
-    chat.innerHTML += `
-
-    <p class="ai">
-
-    流萤：你好……新的旅程开始了。
-
-    </p>
-
-    `;
-
-
-
-    // 保存新的状态
-
-    localStorage.setItem(
-        "firefly_chat",
-        chat.innerHTML
-    );
-
-
-
-    // 自动滚动到底部
-
-    window.scrollTo(
-        0,
-        document.body.scrollHeight
-    );
-
-
-}
-    localStorage.removeItem("firefly_chat");
-   let userName = localStorage.getItem("user_name");
-
-if(!userName){
-
-userName = prompt("请输入你的名字");
-
-localStorage.setItem(
-"user_name",
-userName
-);
-
-}
 
 </script>
+
+
   
 </body>
 
