@@ -39,32 +39,6 @@ export default async function handler(req, res) {
     let reply = "";
 
 
-// ==============================
-// 🌸 用户名字记忆
-// ==============================
-
-let userName = "开拓者";
-
-
-
-
-    /*
-    
-    随机回复函数
-    
-    后面所有回复池都会调用它
-    
-    */
-
-
-    function random(list){
-
-        return list[
-            Math.floor(
-                Math.random()*list.length
-            )
-        ];
-
     }
 
 
@@ -598,15 +572,10 @@ reply=randomNoRepeat([
 
     
 
-
-
-// 自动替换名字
-reply = reply.replaceAll("落尘", userName);
-
-    return res.status(200).json({
-
-        reply
-
+return res.status(200).json({
+    reply: reply,
+    message: reply
+});
     });
 
 
