@@ -10,127 +10,130 @@
 
 <style>
 
-body {
-    background:#0b1020;
-    color:white;
-    font-family:sans-serif;
-    text-align:center;
-}
+body{
 
-
-.box {
-    margin-top:50px;
-    padding:20px;
-}
-
-
-.avatar {
-
-    width:120px;
-    height:120px;
-
-    border-radius:50%;
-
-    background:#8ee7ff;
-
-    margin:auto;
+background:#0b1020;
+color:white;
+font-family:sans-serif;
+text-align:center;
 
 }
 
 
-h1 {
+.box{
 
-    font-size:40px;
-
-}
-
-
-.chat {
-
-    margin:30px auto;
-
-    width:70%;
-
-    min-height:250px;
-
-    background:#1b2340;
-
-    padding:25px;
-
-    border-radius:20px;
-
-    text-align:left;
-
-    font-size:20px;
+margin-top:60px;
 
 }
 
 
-.user {
+.avatar{
 
-    color:#8ee7ff;
-
-}
-
-
-.ai {
-
-    color:#ffb6d9;
+width:150px;
+height:150px;
+border-radius:50%;
+background:#8ee7ff;
+margin:auto;
 
 }
 
 
 
-.input-area {
+h1{
 
-    display:flex;
-
-    justify-content:center;
-
-    gap:10px;
+font-size:40px;
 
 }
 
 
 
-input {
+.chat{
 
-    width:60%;
+margin:40px auto;
 
-    padding:15px;
+width:70%;
+min-height:300px;
 
-    border-radius:20px;
+background:#1b2340;
 
-    border:none;
+padding:30px;
 
-    font-size:16px;
+border-radius:25px;
+
+text-align:left;
+
+font-size:20px;
+
+line-height:1.8;
 
 }
 
 
 
-button {
+.user{
 
-    padding:15px 25px;
+color:#8ee7ff;
 
-    border-radius:20px;
+}
 
-    border:none;
 
-    background:#8ee7ff;
 
-    color:#0b1020;
+.ai{
 
-    font-size:16px;
+color:#ffb6d9;
+
+}
+
+
+
+.input-area{
+
+display:flex;
+
+justify-content:center;
+
+gap:10px;
+
+}
+
+
+
+input{
+
+width:60%;
+
+padding:15px;
+
+border-radius:20px;
+
+border:none;
+
+font-size:16px;
+
+}
+
+
+
+button{
+
+padding:15px 25px;
+
+border-radius:20px;
+
+border:none;
+
+background:#8ee7ff;
+
+color:#333;
+
+font-size:16px;
 
 }
 
 
 </style>
 
-
 </head>
-
 
 
 <body>
@@ -165,7 +168,6 @@ button {
 
 
 
-
 <div class="input-area">
 
 
@@ -188,8 +190,24 @@ placeholder="和流萤说些什么..."
 
 
 
-
 <script>
+
+
+//读取历史聊天
+
+window.onload=function(){
+
+let old=localStorage.getItem("firefly_chat");
+
+if(old){
+
+document.getElementById("chat").innerHTML=old;
+
+}
+
+}
+
+
 
 
 async function send(){
@@ -209,35 +227,37 @@ let chat=document.getElementById("chat");
 
 
 
-chat.innerHTML +=
+//显示自己的话
 
-"<p class='user'>落尘："+msg+"</p>";
+chat.innerHTML+=`
+
+<p class="user">
+
+落尘：${msg}
+
+</p>
+
+`;
 
 
+
+//请求AI
 
 let res=await fetch("/api/chat",{
 
-
 method:"POST",
-
 
 headers:{
 
-
 "Content-Type":"application/json"
-
 
 },
 
-
 body:JSON.stringify({
-
 
 message:msg
 
-
 })
-
 
 });
 
@@ -247,17 +267,42 @@ let data=await res.json();
 
 
 
-chat.innerHTML +=
+//显示流萤回复
 
-"<p class='ai'>流萤："+data.reply+"</p>";
+chat.innerHTML+=`
+
+<p class="ai">
+
+流萤：${data.reply}
+
+</p>
+
+`;
+
+
+
+//保存记忆
+
+localStorage.setItem(
+"firefly_chat",
+chat.innerHTML
+);
 
 
 
 input.value="";
 
 
-}
 
+//自动滚动
+
+window.scrollTo(
+0,
+document.body.scrollHeight
+);
+
+
+}
 
 
 </script>
