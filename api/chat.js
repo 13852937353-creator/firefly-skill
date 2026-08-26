@@ -42,13 +42,9 @@ export default async function handler(req, res) {
 // ==============================
 // 🌸 用户名字读取
 // ==============================
+let userName = req.body.userName || "阿星";
 
-let userName = "开拓者";
 
-
-if(req.body.userName){
-
-    userName = req.body.userName;
 
 }
 
