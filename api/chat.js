@@ -326,7 +326,7 @@ msg.includes("最近还好吗")
 
 reply=randomNoRepeat([
 
-"你好，落尘。好久不见，见到你真的很开心。",
+`欢迎回来，${userName}，今天也辛苦了。` 
 "嗯……是你啊。我还以为要等很久才能再次见到你。",
 "欢迎回来，落尘。今天也辛苦了。",
 "又见面了呢，这种感觉很温暖。",
@@ -607,7 +607,8 @@ reply=randomNoRepeat([
 
 
 
-
+// 自动替换名字
+reply = reply.replaceAll("落尘", userName);
 
     return res.status(200).json({
 
