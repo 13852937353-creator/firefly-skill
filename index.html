@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
 
 <title>流萤</title>
 
@@ -12,51 +11,118 @@
 <style>
 
 body {
-background:#0b1020;
-color:white;
-font-family:sans-serif;
-text-align:center;
+    background:#0b1020;
+    color:white;
+    font-family:sans-serif;
+    text-align:center;
 }
 
 
 .box {
-margin-top:50px;
-padding:20px;
+    margin-top:50px;
+    padding:20px;
 }
 
 
 .avatar {
-width:120px;
-height:120px;
-border-radius:50%;
-background:#8ee7ff;
-margin:auto;
+
+    width:120px;
+    height:120px;
+
+    border-radius:50%;
+
+    background:#8ee7ff;
+
+    margin:auto;
+
+}
+
+
+h1 {
+
+    font-size:40px;
+
 }
 
 
 .chat {
-margin-top:30px;
-background:#1b2340;
-padding:20px;
-border-radius:20px;
-min-height:200px;
-text-align:left;
+
+    margin:30px auto;
+
+    width:70%;
+
+    min-height:250px;
+
+    background:#1b2340;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    text-align:left;
+
+    font-size:20px;
+
 }
 
 
-input{
-padding:12px;
-width:70%;
-border-radius:15px;
-border:none;
+.user {
+
+    color:#8ee7ff;
+
 }
 
 
-button{
-padding:12px;
-border-radius:15px;
-border:none;
-background:#8ee7ff;
+.ai {
+
+    color:#ffb6d9;
+
+}
+
+
+
+.input-area {
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:10px;
+
+}
+
+
+
+input {
+
+    width:60%;
+
+    padding:15px;
+
+    border-radius:20px;
+
+    border:none;
+
+    font-size:16px;
+
+}
+
+
+
+button {
+
+    padding:15px 25px;
+
+    border-radius:20px;
+
+    border:none;
+
+    background:#8ee7ff;
+
+    color:#0b1020;
+
+    font-size:16px;
+
 }
 
 
@@ -64,20 +130,31 @@ background:#8ee7ff;
 
 
 </head>
+
+
+
 <body>
+
 
 <div class="box">
 
+
 <div class="avatar"></div>
 
-<h1>🌸 流萤</h1>
+
+<h1>
+🌸 流萤
+</h1>
+
 
 
 <div class="chat" id="chat">
 
-<p style="color:#ffb6d9">
+
+<p class="ai">
 流萤：欢迎回来，落尘。
 </p>
+
 
 <p>
 这里以后会成为我们的聊天空间。
@@ -87,56 +164,107 @@ background:#8ee7ff;
 </div>
 
 
-<br>
 
 
-<input id="input" placeholder="和流萤说些什么...">
+<div class="input-area">
 
-<button onclick="send()">发送</button>
+
+<input 
+id="input"
+placeholder="和流萤说些什么..."
+>
+
+
+<button onclick="send()">
+发送
+</button>
 
 
 </div>
-<script>
-  </body>
 
-</html>
+
+
+</div>
+
+
+
+
+<script>
+
 
 async function send(){
 
+
 let input=document.getElementById("input");
+
 
 let msg=input.value;
 
+
 if(!msg)return;
+
 
 
 let chat=document.getElementById("chat");
 
 
-chat.innerHTML += 
-"<p style='color:#8ee7ff'>落尘："+msg+"</p>";
+
+chat.innerHTML +=
+
+"<p class='user'>落尘："+msg+"</p>";
+
 
 
 let res=await fetch("/api/chat",{
+
+
 method:"POST",
+
+
 headers:{
+
+
 "Content-Type":"application/json"
+
+
 },
+
+
 body:JSON.stringify({
+
+
 message:msg
+
+
 })
+
+
 });
+
 
 
 let data=await res.json();
 
 
+
 chat.innerHTML +=
-"<p style='color:#ffb6d9'>流萤："+data.reply+"</p>";
+
+"<p class='ai'>流萤："+data.reply+"</p>";
+
 
 
 input.value="";
 
+
 }
 
+
+
 </script>
+
+
+
+</body>
+
+
+</html>
