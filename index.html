@@ -180,7 +180,9 @@ placeholder="和流萤说些什么..."
 <button onclick="send()">
 发送
 </button>
-
+<button onclick="newChat()">
+新建聊天
+</button>
 
 </div>
 
@@ -305,6 +307,74 @@ document.body.scrollHeight
 }
 
 
+// =================================
+// 🌸 流萤 · 新建聊天功能
+// 清除当前聊天记录，重新开始
+// =================================
+
+
+function newChat(){
+
+
+    let result = confirm(
+        "确定要开始新的聊天吗？\n当前聊天记录会被清除。"
+    );
+
+
+    if(!result){
+
+        return;
+
+    }
+
+
+
+    // 清除保存的聊天记录
+
+    localStorage.removeItem(
+        "firefly_chat"
+    );
+
+
+
+    // 清空聊天窗口
+
+    chat.innerHTML = "";
+
+
+
+    // 新的开场白
+
+    chat.innerHTML += `
+
+    <p class="ai">
+
+    流萤：你好……新的旅程开始了。
+
+    </p>
+
+    `;
+
+
+
+    // 保存新的状态
+
+    localStorage.setItem(
+        "firefly_chat",
+        chat.innerHTML
+    );
+
+
+
+    // 自动滚动到底部
+
+    window.scrollTo(
+        0,
+        document.body.scrollHeight
+    );
+
+
+}
 </script>
 
 
