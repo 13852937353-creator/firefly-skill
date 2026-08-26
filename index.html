@@ -1,148 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>流萤</title>
-
-<style>
-body {
-  background:#0b1020;
-  color:white;
-  font-family:sans-serif;
-  text-align:center;
-}
-
-.box {
-  margin-top:40px;
-  padding:20px;
-}
-
-.avatar {
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  background:#8ee7ff;
-  margin:auto;
-}
-
-.chat {
-  margin:30px auto;
-  max-width:500px;
-  background:#1b2340;
-  padding:20px;
-  border-radius:20px;
-  text-align:left;
-  min-height:250px;
-}
-
-.message {
-  margin:10px 0;
-}
-
-.user {
-  color:#8ee7ff;
-}
-
-.firefly {
-  color:#ffb7d5;
-}
-
-.input-area {
-  margin-top:20px;
-}
-
-input {
-  width:70%;
-  padding:12px;
-  border-radius:15px;
-  border:none;
-}
-
-button {
-  padding:12px 18px;
-  border-radius:15px;
-  border:none;
-  background:#8ee7ff;
-}
-</style>
-
-</head>
-
-
-<body>
-
-<div class="box">
-
-<div class="avatar"></div>
-
-<h1>🌸 流萤</h1>
-
-
 <div class="chat" id="chat">
-
-<div class="message firefly">
-流萤：欢迎回来，落尘。
 </div>
-
-<div class="message">
-这里以后会成为我们的聊天空间。
-</div>
-
-</div>
-
-
-<div class="input-area">
 
 <input id="input" placeholder="和流萤说些什么...">
 
-<button onclick="send()">
-发送
-</button>
-
-</div>
-
-
-</div>
+<button onclick="send()">发送</button>
 
 
 <script>
 
-function send(){
+async function send(){
 
 let input=document.getElementById("input");
 
-let text=input.value;
+let msg=input.value;
 
-if(!text) return;
+if(!msg)return;
 
 
 let chat=document.getElementById("chat");
 
 
 chat.innerHTML += 
-`
-<div class="message user">
-落尘：${text}
-</div>
-`;
+"<p style='color:#8ee7ff'>落尘："+msg+"</p>";
 
 
-chat.innerHTML += 
-`
-<div class="message firefly">
-流萤：嗯……我听到了。
-</div>
-`;
+let res=await fetch("/api/chat",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+message:msg
+})
+});
+
+
+let data=await res.json();
+
+
+chat.innerHTML +=
+"<p style='color:#ffb6d9'>流萤："+data.reply+"</p>";
 
 
 input.value="";
 
-chat.scrollTop=chat.scrollHeight;
-
 }
 
 </script>
-
-
-</body>
-</html>
