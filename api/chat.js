@@ -58,6 +58,13 @@ if(req.body.userName){
 // ==============================
 
 let lastReply = "";
+    function random(list){
+
+    return list[
+        Math.floor(Math.random()*list.length)
+    ];
+
+}
 
 
 
