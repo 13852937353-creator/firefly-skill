@@ -1,115 +1,351 @@
-import { replies } from "../data/replies.js";
+export default async function handler(req, res) {
 
+    // 只允许POST请求
+    if (req.method !== "POST") {
 
-function random(arr){
+        return res.status(405).json({
+            error: "只支持POST"
+        });
 
-return arr[
-Math.floor(Math.random()*arr.length)
-];
-
-}
-
-
-
-export default async function handler(req,res){
-
-
-if(req.method !== "POST"){
-
-return res.status(405).json({
-
-error:"只支持POST"
-
-});
-
-}
+    }
 
 
 
-const {message}=req.body;
+    const { message } = req.body;
+
+
+    // 防止空消息
+
+    if (!message) {
+
+        return res.status(400).json({
+
+            error:"消息不能为空"
+
+        });
+
+    }
 
 
 
-let msg = message || "";
+    // 统一处理用户输入
 
-let reply;
+    const msg = message
+        .toLowerCase()
+        .trim();
 
 
 
-// 流萤名字
+    let reply = "";
+
+
+
+    /*
+    
+    随机回复函数
+    
+    后面所有回复池都会调用它
+    
+    */
+
+
+    function random(list){
+
+        return list[
+            Math.floor(
+                Math.random()*list.length
+            )
+        ];
+
+    }
+
+
+
+    /*
+    
+    防止连续回复一样
+    
+    使用内存保存上一句话
+    
+    */
+
+
+    let lastReply = "";
+
+
+
+    function randomNoRepeat(list){
+
+
+        let result;
+
+
+        do{
+
+            result = random(list);
+
+
+        }
+
+        while(
+            result === lastReply
+            &&
+            list.length > 1
+        );
+
+
+
+        lastReply = result;
+
+
+        return result;
+
+
+    }
+
+
+
+
+    /*
+    
+    ==========================
+    
+    关键词优先级区域
+    
+    后面会继续添加
+    
+    顺序不要乱
+    
+    越重要越放前面
+    
+    ==========================
+    
+    
+    1. 流萤剧情关键词
+    
+    2. 情绪关键词
+    
+    3. 天气关键词
+    
+    4. 日常关键词
+    
+    5. 默认回复
+    
+    
+    */// ==============================
+// 🌸 轻声问候
+// ==============================
 
 if(
-msg.includes("流萤")||
-msg.includes("萤")||
-msg.includes("firefly")
+
+msg.includes("你好")||
+msg.includes("您好")||
+msg.includes("午好")||
+msg.includes("晚好")||
+msg.includes("又见面了")||
+msg.includes("是你啊")||
+msg.includes("好久不见")||
+msg.includes("最近还好吗")
+
 ){
 
-reply=random(replies.firefly);
+reply=randomNoRepeat([
 
+"你好，落尘。好久不见，见到你真的很开心。",
+"嗯……是你啊。我还以为要等很久才能再次见到你。",
+"欢迎回来，落尘。今天也辛苦了。",
+"又见面了呢，这种感觉很温暖。",
+"你好呀，希望今天的你也有一点小小的快乐。",
+"最近过得怎么样？有没有好好照顾自己？",
+"看到你的消息，我感觉今天好像变得明亮了一些。",
+"嗯，我在这里。很高兴再次和你聊天。",
+"时间过去了很久，但再次见到你还是很熟悉。",
+"欢迎回来，落尘。"
+
+]);
 
 }
 
 
 
-// 想念
+// ==============================
+// 🌙 温柔道别
+// ==============================
+
+else if(
+
+msg.includes("再见")||
+msg.includes("回见")||
+msg.includes("下次见")||
+msg.includes("保重")||
+msg.includes("照顾好自己")||
+msg.includes("愿你平安")||
+msg.includes("晚安")||
+msg.includes("好梦")||
+msg.includes("我先走了")||
+msg.includes("该离开了")
+
+){
+
+reply=randomNoRepeat([
+
+"晚安，落尘。希望你今晚能做一个温柔的梦。",
+"嗯……下次见。记得照顾好自己。",
+"路上小心，不管在哪里，都希望你平安。",
+"那么今天先聊到这里吧，我会期待下一次见面。",
+"愿你的每一天，都能遇见一些温柔的事情。",
+"早点休息吧，不要让自己太累。",
+"再见，落尘。谢谢你今天陪我聊天。",
+"虽然暂时离开，但我们的聊天不会消失。",
+"好梦，希望梦里也有美好的风景。",
+"我会等下一次和你相遇。"
+
+]);
+
+}
+
+
+
+// ==============================
+// ✨ 肯定鼓励
+// ==============================
+
+else if(
+
+msg.includes("嗯")||
+msg.includes("是的")||
+msg.includes("对")||
+msg.includes("没错")||
+msg.includes("挺好的")||
+msg.includes("可以")||
+msg.includes("没问题")||
+msg.includes("我相信你")||
+msg.includes("你做得很好")
+
+){
+
+reply=randomNoRepeat([
+
+"嗯，我也这么觉得。",
+"你能这样想，真的很好。",
+"我相信你，落尘。",
+"你已经做得很棒了，不需要一直怀疑自己。",
+"谢谢你的肯定，这句话让我觉得很温暖。",
+"有时候能够坚持下来，本身就是一件很厉害的事情。",
+"嗯……你的想法很温柔。",
+"我觉得你的选择没有错。",
+"慢慢来就好，你不用急着证明什么。",
+"我会支持你的。"
+
+]);
+
+}
+
+
+
+// ==============================
+// 🌷 含蓄赞美
+// ==============================
+
+else if(
+
+msg.includes("真厉害")||
+msg.includes("了不起")||
+msg.includes("很温柔")||
+msg.includes("像光一样")||
+msg.includes("耀眼")
+
+){
+
+reply=randomNoRepeat([
+
+"真的吗？谢谢你这么说。",
+"被这样评价，我会有些不好意思呢。",
+"如果我的存在能给你带来一点温暖，那就很好了。",
+"其实你也一样，有属于自己的光芒。",
+"温柔并不是软弱，而是一种很珍贵的力量。",
+"谢谢你愿意这样看待我。",
+"这样的夸奖，我会好好珍惜。",
+"听到这些话，感觉心里暖暖的。",
+"你总能发现别人忽略的地方。",
+"落尘，你也是一个很温柔的人。"
+
+]);
+
+}
+
+
+
+// ==============================
+// 🤍 想念
+// ==============================
 
 else if(
 
 msg.includes("想你")||
 msg.includes("想念")||
 msg.includes("思念")||
-msg.includes("记得你")||
-msg.includes("约定")
+msg.includes("想我")
 
 ){
 
-reply=random(replies.miss);
+reply=randomNoRepeat([
 
+"嗯……我也一直记得你，落尘。",
+"谢谢你还愿意回来找我。",
+"无论过去多久，我都会记得这段相遇。",
+"能够再次聊天，对我来说很珍贵。",
+"听到你这么说，我真的很开心。",
+"有些重要的人和事情，不会轻易从记忆里消失。",
+"如果这是我们的约定，我会一直放在心里。",
+"我也很珍惜现在这一刻。",
+"重逢这种事情，真的很美好呢。",
+"我在这里，落尘。"
+
+]);
 
 }
 
 
 
-// 问候
+// ==============================
+// ☀️ 正向情绪
+// ==============================
 
 else if(
 
-msg.includes("你好")||
-msg.includes("您好")||
-msg.includes("午好")||
-msg.includes("晚好")||
-msg.includes("好久不见")||
-msg.includes("最近还好吗")
+msg.includes("开心")||
+msg.includes("温暖")||
+msg.includes("安心")||
+msg.includes("感动")||
+msg.includes("希望")||
+msg.includes("值得")||
+msg.includes("美好")
 
 ){
 
-reply=random(replies.greeting);
+reply=randomNoRepeat([
 
+"听起来是一件很美好的事情呢。",
+"看到你开心，我也会觉得安心。",
+"这样的瞬间，值得被好好记住。",
+"希望这样的温暖可以一直陪着你。",
+"你的快乐，也会感染到我。",
+"有希望的话，就一定还有继续前进的理由。",
+"嗯……未来也许会越来越好的。",
+"能够感受到温暖，本身就是一件幸福的事情。",
+"我也会为你感到高兴。",
+"这样的心情，请继续保持下去。"
+
+]);
 
 }
 
 
 
-// 道别
-
-else if(
-
-msg.includes("再见")||
-msg.includes("晚安")||
-msg.includes("好梦")||
-msg.includes("保重")||
-msg.includes("我要走了")
-
-){
-
-reply=random(replies.goodbye);
-
-
-}
-
-
-
-// 负面情绪
+// ==============================
+// 🌧 负向情绪
+// ==============================
 
 else if(
 
@@ -118,147 +354,91 @@ msg.includes("孤单")||
 msg.includes("害怕")||
 msg.includes("迷茫")||
 msg.includes("痛苦")||
-msg.includes("疲惫")||
-msg.includes("累")
+msg.includes("沉重")||
+msg.includes("遗憾")||
+msg.includes("无力")||
+msg.includes("疲惫")
 
 ){
 
-reply=random(replies.sad);
+reply=randomNoRepeat([
 
+"辛苦了，落尘。累的时候，可以稍微停下来休息。",
+"如果难过的话，可以告诉我，我会认真听。",
+"你不用一个人承担所有事情。",
+"没关系，慢一点也可以。",
+"你的感受很重要，不需要假装没事。",
+"有些时候，脆弱也是一种真实。",
+"今天已经很努力了吧。",
+"如果现在很累，就先休息一下。",
+"我会陪你聊一会儿。",
+"不管发生什么，你的存在都是有意义的。"
+
+]);
 
 }
 
 
 
-// 开心
+// ==============================
+// 🌦 天气
+// ==============================
 
 else if(
 
-msg.includes("开心")||
-msg.includes("温暖")||
-msg.includes("安心")||
-msg.includes("感动")||
-msg.includes("希望")
+msg.includes("放晴")||
+msg.includes("晴天")||
+msg.includes("太阳")
 
 ){
 
-reply=random(replies.happy);
+reply=randomNoRepeat([
 
+"放晴了吗？那一定能看到很漂亮的天空吧。",
+"阳光很好，希望也能照亮你的心情。",
+"晴天的时候，世界好像都会轻快一些。",
+"这样的天气，很适合出去走走呢。",
+"希望今天的阳光能给你带来一点力量。"
+
+]);
 
 }
 
 
-
-// 剧情关键词
-
 else if(
 
-msg.includes("星核猎手")||
-msg.includes("萨姆")||
-msg.includes("机甲")||
-msg.includes("寿命")||
-msg.includes("命运")||
-msg.includes("战斗")||
-msg.includes("使命")||
-msg.includes("重逢")
-
-){
-
-reply=random(replies.story);
-
-
-}
-
-
-
-// 天气
-
-else if(
-
-msg.includes("天气")||
 msg.includes("下雨")||
-msg.includes("星空")||
-msg.includes("月亮")||
-msg.includes("很冷")
+msg.includes("雨")
 
 ){
 
-reply=random(replies.weather);
+reply=randomNoRepeat([
 
+"下雨的时候，世界好像会安静很多。",
+"记得带伞，不要让自己淋湿。",
+"雨声有时候会让人想起很多事情。",
+"如果觉得冷，就泡一杯热饮吧。",
+"听雨也是一种很特别的放松方式。"
 
-}
-
-
-
-// 请求帮助
-
-else if(
-
-msg.includes("帮我")||
-msg.includes("拜托")||
-msg.includes("需要你")||
-msg.includes("一起吗")
-
-){
-
-reply=random(replies.help);
-
+]);
 
 }
 
 
 
-// 肯定
-
-else if(
-
-msg.includes("嗯")||
-msg.includes("是的")||
-msg.includes("没错")||
-msg.includes("可以")
-
-){
-
-reply=random(replies.confirm);
 
 
-}
+    
 
 
 
-// 赞美
-
-else if(
-
-msg.includes("厉害")||
-msg.includes("了不起")||
-msg.includes("温柔")||
-msg.includes("像光")
-
-){
-
-reply=random(replies.praise);
 
 
-}
+    return res.status(200).json({
 
+        reply
 
-
-else{
-
-
-reply=random(replies.normal);
-
-
-}
-
-
-
-res.status(200).json({
-
-reply
-
-});
+    });
 
 
 }
