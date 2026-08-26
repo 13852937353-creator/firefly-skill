@@ -1,5 +1,17 @@
-export default async function handler(req,res){
+import { replies } from "../data/replies.js";
 
+
+function random(arr){
+
+return arr[
+Math.floor(Math.random()*arr.length)
+];
+
+}
+
+
+
+export default async function handler(req,res){
 
 
 if(req.method !== "POST"){
@@ -18,153 +30,231 @@ const {message}=req.body;
 
 
 
-let reply="";
+let msg = message || "";
+
+let reply;
 
 
 
-
-//叫流萤
+// 流萤名字
 
 if(
-message.includes("流萤")
+msg.includes("流萤")||
+msg.includes("萤")||
+msg.includes("firefly")
 ){
 
-let list=[
-
-"嗯……我在，落尘。",
-
-"我听到了。你叫我的时候，我会回应你。",
-
-"落尘，好久不见。谢谢你还记得我。"
-
-];
-
-
-reply=list[
-Math.floor(
-Math.random()*list.length
-)
-];
+reply=random(replies.firefly);
 
 
 }
 
 
 
-
-//想念
+// 想念
 
 else if(
 
-message.includes("想你")
-||
-message.includes("想念")
+msg.includes("想你")||
+msg.includes("想念")||
+msg.includes("思念")||
+msg.includes("记得你")||
+msg.includes("约定")
 
 ){
 
-
-reply=
-"嗯……我也一直记得你，落尘。无论多久没见，我都还在这里。";
+reply=random(replies.miss);
 
 
 }
 
 
 
-
-//你好
+// 问候
 
 else if(
 
-message.includes("你好")
-||
-message.includes("在吗")
+msg.includes("你好")||
+msg.includes("您好")||
+msg.includes("午好")||
+msg.includes("晚好")||
+msg.includes("好久不见")||
+msg.includes("最近还好吗")
 
 ){
 
-
-reply=
-"你好，落尘。今天也辛苦了。能再次见到你，我很开心。";
+reply=random(replies.greeting);
 
 
 }
 
 
 
-
-//开心
+// 道别
 
 else if(
 
-message.includes("开心")
-||
-message.includes("快乐")
+msg.includes("再见")||
+msg.includes("晚安")||
+msg.includes("好梦")||
+msg.includes("保重")||
+msg.includes("我要走了")
 
 ){
 
-
-reply=
-"如果你开心的话，我也会觉得很温暖。看到你这样，我也会安心。";
+reply=random(replies.goodbye);
 
 
 }
 
 
 
-
-//难过
+// 负面情绪
 
 else if(
 
-message.includes("累")
-||
-message.includes("难过")
+msg.includes("难过")||
+msg.includes("孤单")||
+msg.includes("害怕")||
+msg.includes("迷茫")||
+msg.includes("痛苦")||
+msg.includes("疲惫")||
+msg.includes("累")
 
 ){
 
-
-reply=
-"累了的话，就休息一下吧。你不用一直逞强，我会陪着你。";
+reply=random(replies.sad);
 
 
 }
 
 
 
-
-//记忆问题
+// 开心
 
 else if(
 
-message.includes("记得")
-||
-message.includes("认识")
+msg.includes("开心")||
+msg.includes("温暖")||
+msg.includes("安心")||
+msg.includes("感动")||
+msg.includes("希望")
 
 ){
 
-
-reply=
-"嗯……我记得你，落尘。你的声音，我不会忘记。";
+reply=random(replies.happy);
 
 
 }
 
+
+
+// 剧情关键词
+
+else if(
+
+msg.includes("星核猎手")||
+msg.includes("萨姆")||
+msg.includes("机甲")||
+msg.includes("寿命")||
+msg.includes("命运")||
+msg.includes("战斗")||
+msg.includes("使命")||
+msg.includes("重逢")
+
+){
+
+reply=random(replies.story);
+
+
+}
+
+
+
+// 天气
+
+else if(
+
+msg.includes("天气")||
+msg.includes("下雨")||
+msg.includes("星空")||
+msg.includes("月亮")||
+msg.includes("很冷")
+
+){
+
+reply=random(replies.weather);
+
+
+}
+
+
+
+// 请求帮助
+
+else if(
+
+msg.includes("帮我")||
+msg.includes("拜托")||
+msg.includes("需要你")||
+msg.includes("一起吗")
+
+){
+
+reply=random(replies.help);
+
+
+}
+
+
+
+// 肯定
+
+else if(
+
+msg.includes("嗯")||
+msg.includes("是的")||
+msg.includes("没错")||
+msg.includes("可以")
+
+){
+
+reply=random(replies.confirm);
+
+
+}
+
+
+
+// 赞美
+
+else if(
+
+msg.includes("厉害")||
+msg.includes("了不起")||
+msg.includes("温柔")||
+msg.includes("像光")
+
+){
+
+reply=random(replies.praise);
+
+
+}
 
 
 
 else{
 
 
-reply=
-"嗯……我听到了，落尘。可以再告诉我一点吗？";
+reply=random(replies.normal);
 
 
 }
 
 
 
-
-return res.status(200).json({
+res.status(200).json({
 
 reply
 
