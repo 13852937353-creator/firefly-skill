@@ -198,18 +198,15 @@ margin-bottom:30px;
 
 
 /* 聊天区域 */
-
-
 .chat{
 
-width:75%;
+width:85%;
 
 max-width:900px;
 
-min-height:350px;
+height:520px;
 
 margin:30px auto;
-
 
 padding:25px;
 
@@ -222,7 +219,6 @@ rgba(255,255,255,.08);
 backdrop-filter:
 
 blur(15px);
-
 
 
 border-radius:25px;
@@ -242,7 +238,6 @@ box-shadow:
 
 text-align:left;
 
-
 font-size:18px;
 
 line-height:1.8;
@@ -251,9 +246,10 @@ line-height:1.8;
 overflow-y:auto;
 
 
+scroll-behavior:smooth;
+
+
 }
-
-
 
 
 
@@ -718,18 +714,7 @@ chat.innerHTML
 
 input.value="";
 
-
-
-window.scrollTo(
-0,
-document.body.scrollHeight
-);
-
-
-}
-
-
-
+chat.scrollTop = chat.scrollHeight;
 
 function newChat(){
 
@@ -777,11 +762,7 @@ chat.innerHTML
 
 
 
-window.scrollTo(
-0,
-document.body.scrollHeight
-);
-
+chat.scrollTop = chat.scrollHeight;
 
 }
 
