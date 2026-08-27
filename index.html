@@ -593,96 +593,7 @@ let userName = localStorage.getItem("userName");
 
 if(!userName){
 
-userName = prompt("请输入你的名字") || "落尘";
-
-localStorage.setItem(
-"userName",
-userName
-);
-
-}
-localStorage.setItem(
-"userName",
-userName
-);
-
-
-//读取历史聊天
-
-window.onload=function(){
-
-let old=localStorage.getItem("firefly_chat");
-
-if(old){
-
-document.getElementById("chat").innerHTML=old;
-
-}else{
-
-document.getElementById("chat").innerHTML=
-`
-<p class="ai">
-流萤：欢迎回来，${userName}。
-</p>
-`;
-
-}
-
-}
-
-
-
-
-async function send(){
-
-
-let input=document.getElementById("input");
-
-let msg=input.value;
-
-
-if(!msg)return;
-
-
-let chat=document.getElementById("chat");
-
-
-
-chat.innerHTML+=`
-
-<p class="user">
-
-${userName}：${msg}
-
-</p>
-
-`;
-
-
-
-let res=await fetch("/api/chat",{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":"application/json"
-
-},
-
-body:JSON.stringify({
-message:msg,
-userName:userName
-})
-
-});
-
-
-
-let data=await res.json();
-  if(data.userName){
-
-    userName=data.userName;
+    userName = prompt("请输入你的名字") || "落尘";
 
     localStorage.setItem(
         "userName",
@@ -692,84 +603,187 @@ let data=await res.json();
 }
 
 
+//读取历史聊天
+window.onload=function(){
 
-chat.innerHTML+=`
+    let old = localStorage.getItem("firefly_chat");
 
-<p class="ai">
-
-流萤：${data.reply}
-
-</p>
-
-`;
+    let chat=document.getElementById("chat");
 
 
+    if(old){
 
-localStorage.setItem(
-"firefly_chat",
-chat.innerHTML
-);
+        chat.innerHTML=old;
+
+    }else{
+
+        chat.innerHTML=
+        `
+        <p class="ai">
+        流萤：欢迎回来，${userName}。
+        </p>
+        `;
+
+    }
+
+};
 
 
 
-input.value="";
 
-chat.scrollTop = chat.scrollHeight;
-  
+
+async function send(){
+
+
+    let input=document.getElementById("input");
+
+    let msg=input.value.trim();
+
+
+    if(!msg)return;
+
+
+
+    let chat=document.getElementById("chat");
+
+
+
+    chat.innerHTML+=
+    `
+    <p class="user">
+    ${userName}：${msg}
+    </p>
+    `;
+
+
+
+    chat.scrollTop=chat.scrollHeight;
+
+
+
+    try{
+
+
+        let res=await fetch("/api/chat",{
+
+            method:"POST",
+
+            headers:{
+
+                "Content-Type":"application/json"
+
+            },
+
+
+            body:JSON.stringify({
+
+                message:msg,
+
+                userName:userName
+
+            })
+
+        });
+
+
+
+        let data=await res.json();
+
+
+
+        chat.innerHTML+=
+        `
+        <p class="ai">
+        流萤：${data.reply}
+        </p>
+        `;
+
+
+
+    }catch(error){
+
+
+        chat.innerHTML+=
+        `
+        <p class="ai">
+        流萤：连接出现问题了……
+        </p>
+        `;
+
+
+    }
+
+
+
+    localStorage.setItem(
+        "firefly_chat",
+        chat.innerHTML
+    );
+
+
+
+    input.value="";
+
+
+    chat.scrollTop=chat.scrollHeight;
+
+
+}
+
+
+
+
 
 function newChat(){
-}
-
-let result=confirm(
-"确定要开始新的聊天吗？\n当前聊天记录会被清除。"
-);
 
 
-if(!result){
-
-return;
-
-}
+    let result=confirm(
+    "确定要开始新的聊天吗？\n当前聊天记录会被清除。"
+    );
 
 
+    if(!result){
 
-localStorage.removeItem(
-"firefly_chat"
-);
+        return;
+
+    }
 
 
 
-let chat=document.getElementById("chat");
-
-
-chat.innerHTML=
-
-`
-
-<p class="ai">
-
-流萤：你好……新的旅程开始了，${userName}。
-
-</p>
-
-`;
+    localStorage.removeItem(
+        "firefly_chat"
+    );
 
 
 
-localStorage.setItem(
-"firefly_chat",
-chat.innerHTML
-);
+    let chat=document.getElementById("chat");
 
 
 
-chat.scrollTop = chat.scrollHeight;
+    chat.innerHTML=
+    `
+    <p class="ai">
+    流萤：你好……新的旅程开始了，${userName}。
+    </p>
+    `;
+
+
+
+    localStorage.setItem(
+        "firefly_chat",
+        chat.innerHTML
+    );
+
+
+
+    chat.scrollTop=chat.scrollHeight;
+
 
 }
+
 
 
 </script>
-
 
   
 </body>
