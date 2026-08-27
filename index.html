@@ -576,9 +576,11 @@ placeholder="和流萤说些什么..."
 
 
 <button onclick="newChat()">
-
 新建聊天
+</button>
 
+<button onclick="changeName()">
+修改名字
 </button>
 
 
@@ -589,7 +591,12 @@ placeholder="和流萤说些什么..."
 <script>
 
 // 用户名字
+// 用户名字系统
+
 let userName = localStorage.getItem("userName");
+
+
+// 如果没有名字，第一次询问
 
 if(!userName){
 
@@ -599,6 +606,36 @@ if(!userName){
         "userName",
         userName
     );
+
+}
+
+
+// 修改名字功能
+
+function changeName(){
+
+    let newName = prompt(
+        "请输入新的名字",
+        userName
+    );
+
+
+    if(newName){
+
+        userName = newName;
+
+
+        localStorage.setItem(
+            "userName",
+            userName
+        );
+
+
+        alert(
+            "名字已修改为：" + userName
+        );
+
+    }
 
 }
 
