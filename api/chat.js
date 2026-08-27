@@ -47,28 +47,20 @@ export default async function handler(req, res) {
 // ==============================
 // 🌸 用户名字读取
 // ==============================
-let userName = req.body.userName || "阿星";
-    if(req.body.userName){
+
+let userName = "阿星";
+
+if(req.body.userName){
 
     userName = req.body.userName;
 
 }
-
-
-
-}
-
 
 // ==============================
 // 防止连续回复一样
 // ==============================
 
 let lastReply = "";
-    function random(list){
-
-    return list[
-        Math.floor(Math.random()*list.length)
-    ];
 
 }
 
