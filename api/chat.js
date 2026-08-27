@@ -48,7 +48,7 @@ export default async function handler(req, res) {
 // 🌸 用户名字读取
 // ==============================
 
-let userName = "阿星";
+let userName = "userName";
 
 if(req.body.userName){
 
@@ -124,24 +124,24 @@ let lastReply = "";
     */// ==============================
 // 🌸 修改用户名字
 // ==============================
-
-if(
-
-msg.includes("叫我")||
+let data=await res.json();
+    if(
 msg.includes("我的名字是")||
 msg.includes("我的名字叫")||
-msg.includes("以后叫我")||
-msg.includes("称呼我")
-
+msg.includes("叫我")||
+msg.includes("以后叫我")
 ){
 
-userName = message
+userName = msg
 .replace("我的名字是","")
 .replace("我的名字叫","")
-.replace("以后叫我","")
 .replace("叫我","")
-.replace("称呼我","")
+.replace("以后叫我","")
 .trim();
+
+localStorage.setItem(
+"userName",
+userName
 );
 
 }
