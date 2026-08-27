@@ -618,8 +618,12 @@ reply=randomNoRepeat([
     
 
 return res.status(200).json({
-    reply: reply,
-    message: reply
+
+    reply:reply,
+
+    message:reply,
+
+    userName:userName
 });
 
 }
