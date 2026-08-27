@@ -62,9 +62,6 @@ if(req.body.userName){
 
 let lastReply = "";
 
-}
-
-
 
     function randomNoRepeat(list){
 
