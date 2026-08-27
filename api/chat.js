@@ -142,12 +142,6 @@ userName = message
 .replace("叫我","")
 .replace("称呼我","")
 .trim();
-localStorage.setItem(
-
-"userName",
-
-userName
-
 );
 
 }
