@@ -3,13 +3,19 @@ function random(list){
     return list[Math.floor(Math.random()*list.length)];
 
 }
-export default async function handler(req, res) {
 
-    // 只允许POST请求
-    if (req.method !== "POST") {
+
+export default async function handler(req,res){
+
+
+    // 只允许POST
+
+    if(req.method !== "POST"){
 
         return res.status(405).json({
-            error: "只支持POST"
+
+            error:"只支持POST"
+
         });
 
     }
@@ -19,9 +25,8 @@ export default async function handler(req, res) {
     const { message } = req.body;
 
 
-    // 防止空消息
 
-    if (!message) {
+    if(!message){
 
         return res.status(400).json({
 
@@ -33,7 +38,7 @@ export default async function handler(req, res) {
 
 
 
-    // 统一处理用户输入
+    // 用户输入处理
 
     const msg = message
         .toLowerCase()
@@ -44,23 +49,22 @@ export default async function handler(req, res) {
     let reply = "";
 
 
-// ==============================
-// 🌸 用户名字读取
-// ==============================
 
-let userName = "userName";
+    // ==============================
+    // 🌸 用户名字读取 修复版
+    // ==============================
 
-if(req.body.userName){
+    let userName = req.body.userName || "落尘";
 
-    userName = req.body.userName;
 
-}
 
-// ==============================
-// 防止连续回复一样
-// ==============================
 
-let lastReply = "";
+    // ==============================
+    // 防止连续回复
+    // ==============================
+
+    let lastReply = "";
+
 
 
     function randomNoRepeat(list){
@@ -71,23 +75,79 @@ let lastReply = "";
 
         do{
 
-            result = random(list);
+
+            result=random(list);
 
 
         }
 
         while(
-            result === lastReply
+            result===lastReply
             &&
-            list.length > 1
+            list.length>1
         );
 
 
 
-        lastReply = result;
+        lastReply=result;
 
 
         return result;
+
+
+    }
+
+
+
+
+    // ==============================
+    // 🌸 修改名字
+    // ==============================
+
+
+    if(
+
+        msg.includes("我的名字是")||
+        msg.includes("我的名字叫")||
+        msg.includes("叫我")||
+        msg.includes("以后叫我")||
+        msg.includes("称呼我")
+
+    ){
+
+
+        userName = message
+
+        .replace("我的名字是","")
+
+        .replace("我的名字叫","")
+
+        .replace("以后叫我","")
+
+        .replace("叫我","")
+
+        .replace("称呼我","")
+
+        .trim();
+
+
+
+        reply=randomNoRepeat([
+
+
+            "嗯，我记住了。以后就这样称呼你。",
+
+            "好的，我会记住你的名字。",
+
+            "知道了，以后见面的时候，我会叫你的名字。",
+
+            "原来你的名字是这个呀，我会好好记住的。",
+
+            "嗯……这个名字，我会放在心里的。"
+
+
+        ]);
+
 
 
     }
@@ -122,42 +182,6 @@ let lastReply = "";
     
     
     */// ==============================
-// 🌸 修改用户名字
-// ==============================
-let data=await res.json();
-    if(
-msg.includes("我的名字是")||
-msg.includes("我的名字叫")||
-msg.includes("叫我")||
-msg.includes("以后叫我")
-){
-
-userName = msg
-.replace("我的名字是","")
-.replace("我的名字叫","")
-.replace("叫我","")
-.replace("以后叫我","")
-.trim();
-
-localStorage.setItem(
-"userName",
-userName
-);
-
-}
-
-reply=randomNoRepeat([
-
-"嗯，我记住了。以后就这样称呼你。",
-"好的，我会记住你的名字。",
-"知道了，以后见面的时候，我会叫你的名字。",
-"原来你的名字是这个呀，我会好好记住的。",
-"嗯……这个名字，我会放在心里的。"
-
-]);
-
-}
-// ==============================
 // 🔥 流萤专属剧情区域
 // 优先级：寿命 > 命运 > 萨姆 > 星核猎手
 // ==============================
@@ -167,7 +191,7 @@ reply=randomNoRepeat([
 // 🌙 流萤 · 寿命与存在
 // ==============================
 
-else if(
+if(
 
 msg.includes("寿命")||
 msg.includes("活多久")||
