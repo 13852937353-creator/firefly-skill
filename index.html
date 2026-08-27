@@ -10,136 +10,509 @@
 
 <style>
 
+
+*{
+
+box-sizing:border-box;
+
+}
+
+
+
 body{
 
-background:
-radial-gradient(circle at top,#243b63,#080b18 70%);
-
-color:white;
-
-font-family:sans-serif;
-
-text-align:center;
+margin:0;
 
 min-height:100vh;
 
+background:
+
+radial-gradient(
+circle at top,
+#35507a,
+#11182d 45%,
+#060812
+);
+
+
+color:white;
+
+font-family:
+
+"Microsoft YaHei",
+sans-serif;
+
+text-align:center;
+
 overflow-x:hidden;
+
 
 }
 
+
+
+/* 星空光点 */
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+width:100%;
+
+height:100%;
+
+background-image:
+
+radial-gradient(
+white 1px,
+transparent 1px
+);
+
+background-size:
+
+80px 80px;
+
+opacity:.15;
+
+pointer-events:none;
+
+}
+
+
+
+/* 主容器 */
 
 .box{
 
-margin-top:60px;
+padding-top:50px;
+
+width:100%;
 
 }
+
+
+
+/* 流萤头像 */
 
 
 .avatar{
 
-width:150px;
-height:150px;
-border-radius:50%;
-background:#8ee7ff;
+width:160px;
+
+height:160px;
+
 margin:auto;
 
+border-radius:50%;
+
+overflow:hidden;
+
+background:#8ee7ff;
+
+box-shadow:
+
+0 0 20px #8ee7ff,
+0 0 50px #6fcfff;
+
+
+animation:
+
+float 4s infinite;
+
+
 }
+
+
+.avatar img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+
+
+@keyframes float{
+
+
+0%{
+
+transform:translateY(0);
+
+}
+
+
+50%{
+
+transform:translateY(-12px);
+
+}
+
+
+100%{
+
+transform:translateY(0);
+
+}
+
+
+}
+
+
 
 
 
 h1{
 
-font-size:40px;
+font-size:42px;
+
+margin-bottom:10px;
+
+text-shadow:
+
+0 0 20px #8ee7ff;
+
 
 }
 
+
+
+.subtitle{
+
+color:#cceaff;
+
+font-size:16px;
+
+margin-bottom:30px;
+
+
+}
+
+
+
+
+
+/* 聊天区域 */
 
 
 .chat{
 
-margin:40px auto;
+width:75%;
 
-width:70%;
-min-height:300px;
+max-width:900px;
 
-background:#1b2340;
+min-height:350px;
 
-padding:30px;
+margin:30px auto;
+
+
+padding:25px;
+
+
+background:
+
+rgba(255,255,255,.08);
+
+
+backdrop-filter:
+
+blur(15px);
+
+
 
 border-radius:25px;
 
+
+border:
+
+1px solid rgba(255,255,255,.15);
+
+
+
+box-shadow:
+
+0 0 40px rgba(120,220,255,.15);
+
+
+
 text-align:left;
 
-font-size:20px;
+
+font-size:18px;
 
 line-height:1.8;
 
+
+overflow-y:auto;
+
+
 }
 
 
 
-.user{
 
-color:#8ee7ff;
 
-}
-
+/* 流萤消息 */
 
 
 .ai{
 
-color:#ffb6d9;
+
+color:#ffd8eb;
+
+
+background:
+
+rgba(255,180,220,.12);
+
+
+padding:
+
+12px 18px;
+
+
+border-radius:
+
+20px;
+
+
+display:
+
+inline-block;
+
+
+max-width:80%;
+
+
+margin:10px;
+
+
+clear:both;
+
 
 }
 
+
+
+
+/* 用户消息 */
+
+
+.user{
+
+
+color:#c9f3ff;
+
+
+background:
+
+rgba(120,220,255,.12);
+
+
+padding:
+
+12px 18px;
+
+
+border-radius:
+
+20px;
+
+
+display:block;
+
+
+max-width:80%;
+
+
+margin:10px;
+
+
+margin-left:auto;
+
+
+text-align:right;
+
+
+}
+
+
+
+
+/* 输入区域 */
 
 
 .input-area{
 
+
 display:flex;
+
 
 justify-content:center;
 
+
 gap:10px;
 
+
 }
+
 
 
 
 input{
 
-width:60%;
 
-padding:15px;
+width:55%;
 
-border-radius:20px;
+
+padding:
+
+15px 20px;
+
+
+border-radius:
+
+30px;
+
 
 border:none;
 
+
+outline:none;
+
+
+background:
+
+rgba(255,255,255,.12);
+
+
+
+color:white;
+
+
 font-size:16px;
 
+
 }
+
+
+
+
+input::placeholder{
+
+
+color:#c7d8e8;
+
+
+}
+
+
 
 
 
 button{
 
-padding:15px 25px;
 
-border-radius:20px;
+padding:
+
+14px 25px;
+
+
+border-radius:
+
+30px;
+
 
 border:none;
 
-background:#8ee7ff;
 
-color:#333;
+cursor:pointer;
+
+
+
+background:
+
+linear-gradient(
+45deg,
+#8ee7ff,
+#ffc6e5
+);
+
+
+
+color:#263044;
+
 
 font-size:16px;
+
+
+
+transition:.3s;
+
 
 }
 
 
+
+
+button:hover{
+
+
+transform:
+
+translateY(-3px);
+
+
+box-shadow:
+
+0 0 20px #8ee7ff;
+
+
+}
+
+
+
+/* 输入中 */
+
+
+.typing{
+
+
+color:#ffd8eb;
+
+opacity:.8;
+
+
+animation:
+
+blink 1s infinite;
+
+
+}
+
+
+
+@keyframes blink{
+
+
+50%{
+
+opacity:.3;
+
+}
+
+
+}
+
+
+
 </style>
+
 
 </head>
 
@@ -157,9 +530,17 @@ font-size:16px;
 </div>
 
 
+
 <h1>
 🌸 流萤
 </h1>
+
+
+<div class="subtitle">
+
+「Firely」
+
+</div>
 
 
 
@@ -167,12 +548,9 @@ font-size:16px;
 
 
 <p class="ai">
-流萤：欢迎回来。
-</p>
 
+流萤：欢迎回来
 
-<p>
-这里以后会成为我们的聊天空间。
 </p>
 
 
@@ -183,25 +561,35 @@ font-size:16px;
 <div class="input-area">
 
 
-<input 
+<input
+
 id="input"
+
 placeholder="和流萤说些什么..."
+
 >
 
 
+
 <button onclick="send()">
+
 发送
+
 </button>
+
+
+
 <button onclick="newChat()">
+
 新建聊天
+
 </button>
 
-</div>
-
-
 
 </div>
 
+
+</div>
 <script>
 
 // 用户名字
