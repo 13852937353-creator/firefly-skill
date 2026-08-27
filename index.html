@@ -284,6 +284,16 @@ userName:userName
 
 
 let data=await res.json();
+  if(data.userName){
+
+    userName=data.userName;
+
+    localStorage.setItem(
+        "userName",
+        userName
+    );
+
+}
 
 
 
